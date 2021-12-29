@@ -19,12 +19,11 @@ import java.util.Objects;
 @Service
 public class TwelveDataClient extends StockDataRepository {
 
-    private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate = new RestTemplate();
     private final TwelveDataToStockDataMapper mapper;
 
-    public TwelveDataClient(StockApiConfiguration configuration, RestTemplate restTemplate) {
+    public TwelveDataClient(StockApiConfiguration configuration) {
         super(configuration);
-        this.restTemplate = restTemplate;
         this.mapper = new TwelveDataToStockDataMapper();
     }
 

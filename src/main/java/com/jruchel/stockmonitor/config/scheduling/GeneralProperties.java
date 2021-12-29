@@ -14,4 +14,5 @@ import java.util.List;
 public class GeneralProperties {
     private List<String> stocks;
     private long timeout;
+    private String wakeupUrl;
 }

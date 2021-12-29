@@ -8,6 +8,7 @@ stock-api:
 general:
   stocks: ${STOCKS}
   timeout: ${TIMEOUT}
+  wakeup-url: ${WAKEUP_URL}
 spring:
   main:
     allow-bean-definition-overriding: true
