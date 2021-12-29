@@ -1,0 +1,13 @@
+stock-api:
+  key:
+    name: ${API_KEY_NAME}
+    value: ${API_KEY_VALUE}
+  address: ${API_ADDRESS}
+  main-endpoint: ${API_MAIN-ENDPOINT}
+
+general:
+  stocks: ${STOCKS}
+  timeout: ${TIMEOUT}
+spring:
+  main:
+    allow-bean-definition-overriding: true
