@@ -10,7 +10,7 @@ import lombok.*;
 public class StockData {
 
     private String ticker;
-    private String price;
+    private double price;
     private String timestamp;
 
     @Override

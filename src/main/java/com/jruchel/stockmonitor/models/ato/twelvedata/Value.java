@@ -9,13 +9,13 @@ import lombok.Setter;
 public class Value {
 
     @JsonProperty("open")
-    private String openingPrice;
-    @JsonProperty("hight")
-    private String highPrice;
+    private double openingPrice;
+    @JsonProperty("high")
+    private double highPrice;
     @JsonProperty("low")
-    private String lowPrice;
+    private double lowPrice;
     @JsonProperty("close")
-    private String closingPrice;
+    private double closingPrice;
     @JsonProperty("datetime")
     private String timestamp;
 

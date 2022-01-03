@@ -4,11 +4,43 @@ stock-api:
     value: ${API_KEY_VALUE}
   address: ${API_ADDRESS}
   main-endpoint: ${API_MAIN-ENDPOINT}
-
 general:
-  stocks: ${STOCKS}
+  notificationEmail: ${NOTIFICATION_EMAIL}
+  stocks:
+    - ticker: NVDA
+      notifyBelow: 290
+      notifyAbove: 300
+      notifyEveryPercent: 5
+    - ticker: TSLA
+      notifyBelow: 1000
+      notifyAbove: 1100
+      notifyEveryPercent: 10
+    - ticker: AMD
+      notifyBelow: 130
+      notifyAbove: 160
+      notifyEveryPercent: 5
+    - ticker: ARKK
+      notifyBelow: 100
+      notifyAbove: 120
+      notifyEveryPercent: 5
+    - ticker: ARKG
+      notifyBelow: 50
+      notifyAbove: 120
+      notifyEveryPercent: 5
   timeout: ${TIMEOUT}
   wakeup-url: ${WAKEUP_URL}
 spring:
   main:
     allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:h2:file:./resources/h2/database
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+      path: /console

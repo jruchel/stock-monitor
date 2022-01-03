@@ -5,8 +5,6 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Component
@@ -15,7 +13,6 @@ public class StockApiConfiguration {
     private String address;
     private String mainEndpoint;
     private Key key;
-    private List<String> stocks;
 
     @Getter
     @Setter
