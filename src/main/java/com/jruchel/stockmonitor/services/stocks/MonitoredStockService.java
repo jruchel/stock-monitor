@@ -5,6 +5,7 @@ import com.jruchel.stockmonitor.repositories.MonitoredStockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,14 @@ public class MonitoredStockService {
     }
 
     public MonitoredStock save(MonitoredStock stock) {
+        MonitoredStock existingStock = repository
+                .getMonitoredStockByTickerAndNotifyBelowAndNotifyAboveAndNotifyEveryPercent(
+                        stock.getTicker(),
+                        stock.getNotifyBelow(),
+                        stock.getNotifyAbove(),
+                        stock.getNotifyEveryPercent()
+                );
+        if (existingStock != null) throw new ValidationException("Identical stock monitoring already exists");
         return repository.save(stock);
     }
 

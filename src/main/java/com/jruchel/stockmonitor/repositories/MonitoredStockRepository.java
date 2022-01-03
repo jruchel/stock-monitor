@@ -11,4 +11,6 @@ public interface MonitoredStockRepository extends JpaRepository<MonitoredStock, 
 
     MonitoredStock getMonitoredStockById(String id);
 
+    MonitoredStock getMonitoredStockByTickerAndNotifyBelowAndNotifyAboveAndNotifyEveryPercent(String ticker, double notifyBelow, double notifyAbove, double notifyEveryPercent);
+
 }

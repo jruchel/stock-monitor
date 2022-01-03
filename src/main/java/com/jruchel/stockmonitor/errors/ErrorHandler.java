@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.ValidationException;
 import java.util.Date;
 
 @ControllerAdvice
@@ -17,7 +18,6 @@ public class ErrorHandler {
         return getErrorResponse(exception.getMessage(), "Not found", HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler(ResponseStatusException.class)
     private ResponseEntity<ErrorResponse> httpException(ResponseStatusException exception) {
         return getErrorResponse(exception.getMessage(), exception.getMessage(), exception.getStatus());
@@ -25,6 +25,11 @@ public class ErrorHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<ErrorResponse> validationError(MethodArgumentNotValidException exception) {
+        return getErrorResponse(exception.getMessage(), "Validation error", HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    private ResponseEntity<ErrorResponse> validationError(ValidationException exception) {
         return getErrorResponse(exception.getMessage(), "Validation error", HttpStatus.CONFLICT);
     }
 
