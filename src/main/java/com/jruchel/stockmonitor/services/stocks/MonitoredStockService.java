@@ -35,6 +35,13 @@ public class MonitoredStockService {
         return repository.findAll();
     }
 
+    public MonitoredStock update(MonitoredStock stock) {
+        MonitoredStock existingStock = repository.getMonitoredStockById(stock.getId());
+        if (existingStock == null)
+            throw new NullPointerException("Cannot update stock with id: '%s' because it doesn't exist".formatted(stock.getId()));
+        return save(stock);
+    }
+
     public MonitoredStock delete(String id) {
         MonitoredStock stock = repository.findById(id).orElse(null);
         repository.deleteById(id);

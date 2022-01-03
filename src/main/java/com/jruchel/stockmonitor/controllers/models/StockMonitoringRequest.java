@@ -11,12 +11,12 @@ import javax.validation.constraints.Pattern;
 public class StockMonitoringRequest {
 
     @Pattern(regexp = "[A-Z]{3,4}")
-    private String ticker;
+    protected String ticker;
     @Min(0)
-    private double notifyAbove;
+    protected double notifyAbove;
     @Min(0)
-    private double notifyBelow;
+    protected double notifyBelow;
     @Min(0)
-    private double notifyEveryPercent;
+    protected double notifyEveryPercent;
 
 }

@@ -20,7 +20,7 @@ public class ScheduledStockCheckService {
 
     private final GeneralProperties properties;
     private final StockDataService stockDataService;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
     private final StockInformationProcessor stockInformationProcessor;
     private final MonitoredStockService monitoredStockService;
 

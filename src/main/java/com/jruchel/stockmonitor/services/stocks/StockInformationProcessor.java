@@ -42,15 +42,17 @@ public class StockInformationProcessor {
         MonitoredStock relevantStock = getRelevantStock(stockData);
         if (relevantStock == null) return false;
         if (previousNotification != null) {
-            if (stockData.getPrice() > relevantStock.getNotifyAbove() && previousNotification.getPriceNotified() < relevantStock.getNotifyAbove())
+            if (relevantStock.getNotifyAbove() > 0 && stockData.getPrice() > relevantStock.getNotifyAbove() && previousNotification.getPriceNotified() < relevantStock.getNotifyAbove())
                 return true;
-            if (stockData.getPrice() < relevantStock.getNotifyBelow() && previousNotification.getPriceNotified() > relevantStock.getNotifyBelow())
+            if (relevantStock.getNotifyBelow() > 0 && stockData.getPrice() < relevantStock.getNotifyBelow() && previousNotification.getPriceNotified() > relevantStock.getNotifyBelow())
                 return true;
         } else {
-            if (stockData.getPrice() > relevantStock.getNotifyAbove()) return true;
-            if (stockData.getPrice() < relevantStock.getNotifyBelow()) return true;
+            if (relevantStock.getNotifyAbove() > 0 && stockData.getPrice() > relevantStock.getNotifyAbove())
+                return true;
+            if (relevantStock.getNotifyBelow() > 0 && stockData.getPrice() < relevantStock.getNotifyBelow())
+                return true;
         }
-        if (previousNotification == null) return false;
+        if (previousNotification == null || relevantStock.getNotifyEveryPercent() <= 0) return false;
         return getPriceDifferenceInPercentage(previousNotification.getPriceNotified(), stockData.getPrice()) >= relevantStock.getNotifyEveryPercent();
     }
 
