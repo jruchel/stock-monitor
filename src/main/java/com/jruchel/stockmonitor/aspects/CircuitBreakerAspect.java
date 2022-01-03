@@ -17,13 +17,13 @@ public class CircuitBreakerAspect {
 
     @Around("@annotation(com.jruchel.stockmonitor.aspects.BreakCircuit)")
     public Object breakCircuitOnException(ProceedingJoinPoint joinPoint) {
-        if (lastErrorTime == null || lastErrorTime + 30000 < new Date().getTime()) {
+        if (lastErrorTime == null || lastErrorTime + 10000 < new Date().getTime()) {
             try {
                 Object result = joinPoint.proceed();
                 return result;
             } catch (Throwable throwable) {
                 lastErrorTime = new Date().getTime();
-                log.error("Api calls exceeded, waiting 30 seconds");
+                log.error("Api calls exceeded, waiting 10 seconds");
                 return null;
             }
         }

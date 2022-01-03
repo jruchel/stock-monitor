@@ -1,4 +1,4 @@
-package com.jruchel.stockmonitor.services;
+package com.jruchel.stockmonitor.services.stocks;
 
 import com.jruchel.stockmonitor.config.stocksapi.StockApiConfiguration;
 import com.jruchel.stockmonitor.models.StockData;

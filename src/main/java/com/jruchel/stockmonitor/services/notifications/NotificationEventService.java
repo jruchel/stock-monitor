@@ -1,4 +1,4 @@
-package com.jruchel.stockmonitor.services;
+package com.jruchel.stockmonitor.services.notifications;
 
 import com.jruchel.stockmonitor.models.entities.NotificationEvent;
 import com.jruchel.stockmonitor.repositories.NotificationEventRepository;

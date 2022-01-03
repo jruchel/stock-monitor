@@ -1,7 +1,7 @@
 package com.jruchel.stockmonitor.controllers;
 
 import com.jruchel.stockmonitor.models.StockData;
-import com.jruchel.stockmonitor.services.StockDataService;
+import com.jruchel.stockmonitor.services.stocks.StockDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/stocks")
+@RequestMapping("/stocks/data")
 public class StockDataController {
 
     private final StockDataService stockDataService;

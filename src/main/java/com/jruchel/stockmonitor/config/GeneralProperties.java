@@ -1,6 +1,6 @@
 package com.jruchel.stockmonitor.config;
 
-import com.jruchel.stockmonitor.models.Stock;
+import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,12 +16,13 @@ import java.util.List;
 @Setter
 public class GeneralProperties {
     private String notificationEmail;
-    private List<Stock> stocks;
+    private List<MonitoredStock> stocks;
     private long timeout;
     private String wakeupUrl;
 
     @Bean(name = "listOfStocks")
-    public List<Stock> getStocks() {
+    public List<MonitoredStock> getStocks() {
         return stocks;
     }
+
 }

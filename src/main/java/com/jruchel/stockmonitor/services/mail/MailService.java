@@ -1,4 +1,4 @@
-package com.jruchel.stockmonitor.services;
+package com.jruchel.stockmonitor.services.mail;
 
 import com.jruchel.stockmonitor.config.GeneralProperties;
 import com.jruchel.stockmonitor.config.mail.MailConfig;

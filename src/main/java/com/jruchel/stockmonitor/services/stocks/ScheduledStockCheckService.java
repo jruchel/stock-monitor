@@ -1,8 +1,8 @@
-package com.jruchel.stockmonitor.services;
+package com.jruchel.stockmonitor.services.stocks;
 
 import com.jruchel.stockmonitor.aspects.BreakCircuit;
 import com.jruchel.stockmonitor.config.GeneralProperties;
-import com.jruchel.stockmonitor.models.Stock;
+import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.models.StockData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,13 @@ public class ScheduledStockCheckService {
     private final StockDataService stockDataService;
     private final RestTemplate restTemplate = new RestTemplate();
     private final StockInformationProcessor stockInformationProcessor;
+    private final MonitoredStockService monitoredStockService;
 
     @BreakCircuit
     @Scheduled(fixedRateString = "#{generalProperties.timeout}")
     public void checkStocks() {
-        List<StockData> stockData = stockDataService.getMultipleStocksData(properties.getStocks().stream().map(Stock::getTicker).collect(Collectors.toList()));
+        List<MonitoredStock> monitoredStockList = monitoredStockService.getAll();
+        List<StockData> stockData = stockDataService.getMultipleStocksData(monitoredStockList.stream().map(MonitoredStock::getTicker).collect(Collectors.toList()));
         log.info("Current stock prices {}", stockData.get(0).getTimestamp());
         log.info(stockData.toString());
 

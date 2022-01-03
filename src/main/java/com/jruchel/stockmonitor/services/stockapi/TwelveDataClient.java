@@ -1,10 +1,11 @@
-package com.jruchel.stockmonitor.services;
+package com.jruchel.stockmonitor.services.stockapi;
 
 import com.jruchel.stockmonitor.config.stocksapi.StockApiConfiguration;
 import com.jruchel.stockmonitor.models.StockData;
 import com.jruchel.stockmonitor.models.ato.twelvedata.TwelveDataResponse;
 import com.jruchel.stockmonitor.models.ato.twelvedata.TwelveDataStockDataATO;
 import com.jruchel.stockmonitor.models.mappers.TwelveDataToStockDataMapper;
+import com.jruchel.stockmonitor.services.stocks.StockDataRepository;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,10 @@
-package com.jruchel.stockmonitor.services;
+package com.jruchel.stockmonitor.services.stocks;
 
-import com.jruchel.stockmonitor.models.Stock;
+import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.models.StockData;
 import com.jruchel.stockmonitor.models.entities.NotificationEvent;
+import com.jruchel.stockmonitor.services.notifications.NotificationEventService;
+import com.jruchel.stockmonitor.services.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +21,7 @@ public class StockInformationProcessor {
     private final MailService mailService;
     private final NotificationEventService notificationEventService;
     @Qualifier("listOfStocks")
-    private final List<Stock> stockList;
+    private final List<MonitoredStock> stockList;
 
     public void processStockData(StockData stockData) {
         NotificationEvent previousNotification = notificationEventService.findByTicker(stockData.getTicker());
@@ -37,7 +39,7 @@ public class StockInformationProcessor {
     }
 
     private boolean shouldNotify(StockData stockData, NotificationEvent previousNotification) {
-        Stock relevantStock = getRelevantStock(stockData);
+        MonitoredStock relevantStock = getRelevantStock(stockData);
         if (relevantStock == null) return false;
         if (previousNotification != null) {
             if (stockData.getPrice() > relevantStock.getNotifyAbove() && previousNotification.getPriceNotified() < relevantStock.getNotifyAbove())
@@ -52,7 +54,7 @@ public class StockInformationProcessor {
         return getPriceDifferenceInPercentage(previousNotification.getPriceNotified(), stockData.getPrice()) >= relevantStock.getNotifyEveryPercent();
     }
 
-    private Stock getRelevantStock(StockData stockData) {
+    private MonitoredStock getRelevantStock(StockData stockData) {
         return stockList.stream().filter(stock -> stock.getTicker().equals(stockData.getTicker())).findFirst().orElse(null);
     }
 
