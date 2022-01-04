@@ -42,7 +42,7 @@ public class MailService {
 
     @Async
     public void sendCheckpointNotification(String ticker, double newPrice, boolean goneUp) {
-        sendMail(generalProperties.getNotificationEmail(), "%s price has changed".formatted(ticker), String.format("%s stock has gone %s to %f - %s", ticker, goneUp ? "up" : "down", newPrice, new Date().toString()));
+        sendMail(generalProperties.getNotificationEmail(), "%s price has changed".formatted(ticker), String.format("%s stock has gone %s to $%.4f - %s", ticker, goneUp ? "up" : "down", newPrice, new Date().toString()));
     }
 
 }

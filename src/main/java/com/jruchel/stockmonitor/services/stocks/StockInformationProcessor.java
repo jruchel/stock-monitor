@@ -55,6 +55,6 @@ public class StockInformationProcessor {
 
 
     private double getPriceDifferenceInPercentage(double price1, double price2) {
-        return (price1 - price2) / price1 * 100;
+        return Math.abs((price1 - price2) / price1 * 100);
     }
 }
