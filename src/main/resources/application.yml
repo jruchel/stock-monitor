@@ -33,7 +33,7 @@ general:
       notifyBelow: 50
       notifyAbove: 120
       notifyEveryPercent: 5
-  timeout: 8000
+  timeout: 2000
   wakeup-url: ${WAKEUP_URL}
 spring:
   main:

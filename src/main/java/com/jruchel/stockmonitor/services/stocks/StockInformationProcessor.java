@@ -24,10 +24,11 @@ public class StockInformationProcessor {
 
     public void processStockData(StockData stockData) {
         NotificationEvent previousNotification = notificationEventService.findByTicker(stockData.getTicker());
-        if (shouldNotify(stockData, previousNotification))
-            notificationService.sendNotification(stockData.getTicker(), previousNotification.getPriceNotified(), stockData.getPrice());
         if (previousNotification == null)
             notificationService.sendDummyNotification(stockData.getTicker(), stockData.getPrice());
+        else if (shouldNotify(stockData, previousNotification))
+            notificationService.sendNotification(stockData.getTicker(), previousNotification.getPriceNotified(), stockData.getPrice());
+
     }
 
     private boolean shouldNotify(StockData stockData, NotificationEvent previousNotification) {

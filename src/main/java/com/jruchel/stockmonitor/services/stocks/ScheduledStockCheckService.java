@@ -1,9 +1,8 @@
 package com.jruchel.stockmonitor.services.stocks;
 
-import com.jruchel.stockmonitor.aspects.BreakCircuit;
 import com.jruchel.stockmonitor.config.GeneralProperties;
-import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.models.StockData;
+import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,10 +23,10 @@ public class ScheduledStockCheckService {
     private final StockInformationProcessor stockInformationProcessor;
     private final MonitoredStockService monitoredStockService;
 
-    @BreakCircuit
     @Scheduled(fixedRateString = "#{generalProperties.timeout}")
     public void checkStocks() {
         List<MonitoredStock> monitoredStockList = monitoredStockService.getAll();
+        if (monitoredStockList.isEmpty()) return;
         List<StockData> stockData = stockDataService.getMultipleStocksData(monitoredStockList.stream().map(MonitoredStock::getTicker).collect(Collectors.toList()));
         log.info("Current stock prices {}", stockData.get(0).getTimestamp());
         log.info(stockData.toString());
