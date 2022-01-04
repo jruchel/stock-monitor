@@ -2,6 +2,7 @@ package com.jruchel.stockmonitor.services.stocks;
 
 import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.repositories.MonitoredStockRepository;
+import com.jruchel.stockmonitor.services.notifications.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class MonitoredStockService {
 
     private final MonitoredStockRepository repository;
+    private final NotificationService notificationService;
 
     public MonitoredStock getStockByTicker(String ticker) {
         return repository.getMonitoredStockByTicker(ticker);

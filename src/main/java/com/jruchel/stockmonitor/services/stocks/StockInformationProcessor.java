@@ -1,16 +1,15 @@
 package com.jruchel.stockmonitor.services.stocks;
 
-import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.models.StockData;
+import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.models.entities.NotificationEvent;
 import com.jruchel.stockmonitor.services.notifications.NotificationEventService;
-import com.jruchel.stockmonitor.services.mail.MailService;
+import com.jruchel.stockmonitor.services.notifications.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,24 +17,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockInformationProcessor {
 
-    private final MailService mailService;
+    private final NotificationService notificationService;
     private final NotificationEventService notificationEventService;
     @Qualifier("listOfStocks")
     private final List<MonitoredStock> stockList;
 
     public void processStockData(StockData stockData) {
         NotificationEvent previousNotification = notificationEventService.findByTicker(stockData.getTicker());
-        if (shouldNotify(stockData, previousNotification)) {
-            log.info("Sending price change notification for %s from %f to %f".formatted(stockData.getTicker(), previousNotification.getPriceNotified(), stockData.getPrice()));
-            mailService.sendCheckpointNotification(stockData.getTicker(), stockData.getPrice(), stockData.getPrice() >= previousNotification.getPriceNotified());
-            notificationEventService.saveOrUpdateNotification(
-                    NotificationEvent.builder()
-                            .dateNotified(new Date())
-                            .ticker(stockData.getTicker())
-                            .priceNotified(stockData.getPrice())
-                            .build()
-            );
-        }
+        if (shouldNotify(stockData, previousNotification))
+            notificationService.sendNotification(stockData.getTicker(), previousNotification.getPriceNotified(), stockData.getPrice());
+        if (previousNotification == null)
+            notificationService.sendDummyNotification(stockData.getTicker(), stockData.getPrice());
     }
 
     private boolean shouldNotify(StockData stockData, NotificationEvent previousNotification) {
