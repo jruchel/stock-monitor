@@ -21,8 +21,7 @@ public class RoleService {
     public Role getAdminRole() {
         return roleRepository.getByTitle("ROLE_ADMIN");
     }
-
-
+    
     public Role createUserRole() {
         if (roleRepository.getByTitle("ROLE_USER") == null)
             return roleRepository.save(new Role(null, "ROLE_USER"));
