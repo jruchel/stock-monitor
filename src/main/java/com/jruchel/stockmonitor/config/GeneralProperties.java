@@ -19,10 +19,19 @@ public class GeneralProperties {
     private List<MonitoredStock> stocks;
     private long timeout;
     private String wakeupUrl;
+    private Admin admin;
 
     @Bean(name = "listOfStocks")
     public List<MonitoredStock> getStocks() {
         return stocks;
+    }
+
+    @Getter
+    @Setter
+    public static class Admin {
+        private String username;
+        private String password;
+        private String email;
     }
 
 }

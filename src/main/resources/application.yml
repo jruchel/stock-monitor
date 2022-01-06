@@ -10,20 +10,26 @@ mail:
   username: ${EMAIL_USERNAME}
   password: ${EMAIL_PASSWORD}
   tls: true
+jwt:
+  jwtHeaderName: ${JWT_HEADER_NAME}
 general:
+  admin:
+    username: ${ADMIN_USERNAME}
+    password: ${ADMIN_PASSWORD}
+    email: ${ADMIN_EMAIL}
   notificationEmail: ${NOTIFICATION_EMAIL}
   stocks:
     - ticker: NVDA
-      notifyBelow: 270
-      notifyAbove: 300
+      notifyBelow: 300
+      notifyAbove: 280
       notifyEveryPercent: 5
     - ticker: TSLA
-      notifyBelow: 1000
-      notifyAbove: 1100
+      notifyBelow: 1100
+      notifyAbove: 1040
       notifyEveryPercent: 10
     - ticker: AMD
       notifyBelow: 130
-      notifyAbove: 150
+      notifyAbove: 140
       notifyEveryPercent: 5
     - ticker: ARKK
       notifyBelow: 80
