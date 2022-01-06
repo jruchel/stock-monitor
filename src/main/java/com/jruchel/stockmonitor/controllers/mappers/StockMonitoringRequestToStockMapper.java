@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class StockMonitoringRequestToStockMapper {
 
-    public MonitoredStock monitoredStock(StockMonitoringUpdateRequest request) {
+    public MonitoredStock monitoredStock(StockMonitoringUpdateRequest request, String ticker) {
         return MonitoredStock.builder()
                 .id(request.getId())
-                .ticker(request.getTicker())
+                .ticker(ticker)
                 .notifyAbove(request.getNotifyAbove())
                 .notifyBelow(request.getNotifyBelow())
                 .notifyEveryPercent(request.getNotifyEveryPercent())

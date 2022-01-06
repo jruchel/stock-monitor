@@ -14,7 +14,7 @@ general:
   notificationEmail: ${NOTIFICATION_EMAIL}
   stocks:
     - ticker: NVDA
-      notifyBelow: 290
+      notifyBelow: 270
       notifyAbove: 300
       notifyEveryPercent: 5
     - ticker: TSLA
@@ -23,15 +23,15 @@ general:
       notifyEveryPercent: 10
     - ticker: AMD
       notifyBelow: 130
-      notifyAbove: 160
+      notifyAbove: 150
       notifyEveryPercent: 5
     - ticker: ARKK
-      notifyBelow: 100
-      notifyAbove: 120
+      notifyBelow: 80
+      notifyAbove: 100
       notifyEveryPercent: 5
     - ticker: ARKG
       notifyBelow: 50
-      notifyAbove: 120
+      notifyAbove: 100
       notifyEveryPercent: 5
   timeout: 2000
   wakeup-url: ${WAKEUP_URL}

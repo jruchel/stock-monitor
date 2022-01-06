@@ -1,5 +1,7 @@
 package com.jruchel.stockmonitor.services.stocks;
 
+import com.jruchel.stockmonitor.controllers.mappers.StockMonitoringRequestToStockMapper;
+import com.jruchel.stockmonitor.controllers.models.StockMonitoringUpdateRequest;
 import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.repositories.MonitoredStockRepository;
 import com.jruchel.stockmonitor.services.notifications.NotificationService;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 public class MonitoredStockService {
 
     private final MonitoredStockRepository repository;
-    private final NotificationService notificationService;
+    private final StockMonitoringRequestToStockMapper mapper;
 
     public MonitoredStock getStockByTicker(String ticker) {
         return repository.getMonitoredStockByTicker(ticker);
@@ -46,11 +48,11 @@ public class MonitoredStockService {
         return repository.findAll();
     }
 
-    public MonitoredStock update(MonitoredStock stock) {
+    public MonitoredStock update(StockMonitoringUpdateRequest stock) {
         MonitoredStock existingStock = repository.getMonitoredStockById(stock.getId());
         if (existingStock == null)
             throw new NullPointerException("Cannot update stock with id: '%s' because it doesn't exist".formatted(stock.getId()));
-        return save(stock);
+        return save(mapper.monitoredStock(stock, existingStock.getTicker()));
     }
 
     public MonitoredStock delete(String id) {
@@ -73,5 +75,6 @@ public class MonitoredStockService {
         }
         return stocks;
     }
+
 
 }

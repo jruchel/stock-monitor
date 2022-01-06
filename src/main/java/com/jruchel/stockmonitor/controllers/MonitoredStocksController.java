@@ -39,7 +39,7 @@ public class MonitoredStocksController {
 
     @PutMapping
     public ResponseEntity<MonitoredStock> update(@RequestBody @Valid StockMonitoringUpdateRequest request) {
-        return ResponseEntity.ok(monitoredStockService.update(mapper.monitoredStock(request)));
+        return ResponseEntity.ok(monitoredStockService.update(request));
     }
 
 }

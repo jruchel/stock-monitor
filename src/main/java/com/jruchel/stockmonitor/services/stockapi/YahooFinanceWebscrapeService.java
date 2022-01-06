@@ -3,9 +3,7 @@ package com.jruchel.stockmonitor.services.stockapi;
 import com.jruchel.stockmonitor.config.stocksapi.StockApiConfiguration;
 import com.jruchel.stockmonitor.models.StockData;
 import com.jruchel.stockmonitor.services.stocks.StockDataRepository;
-import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
