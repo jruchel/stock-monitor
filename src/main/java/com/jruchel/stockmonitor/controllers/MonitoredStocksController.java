@@ -1,6 +1,7 @@
 package com.jruchel.stockmonitor.controllers;
 
 import com.jruchel.stockmonitor.controllers.mappers.StockMonitoringRequestToStockMapper;
+import com.jruchel.stockmonitor.controllers.models.MonitoredStockResponse;
 import com.jruchel.stockmonitor.controllers.models.StockMonitoringRequest;
 import com.jruchel.stockmonitor.controllers.models.StockMonitoringUpdateRequest;
 import com.jruchel.stockmonitor.models.entities.MonitoredStock;
@@ -32,18 +33,18 @@ public class MonitoredStocksController extends Controller {
     }
 
     @SecuredMapping(method = RequestMethod.GET, role = "user")
-    public ResponseEntity<List<MonitoredStock>> getAll() {
-        return ResponseEntity.ok(monitoredStockService.getAll(securityService.getCurrentUser()));
+    public ResponseEntity<List<MonitoredStockResponse>> getAll() {
+        return ResponseEntity.ok(mapper.monitoredStockResponseList(monitoredStockService.getAll(securityService.getCurrentUser())));
     }
 
     @SecuredMapping(method = RequestMethod.DELETE, role = "user")
-    public ResponseEntity<List<MonitoredStock>> delete(@RequestBody List<String> ids) {
-        return ResponseEntity.ok(monitoredStockService.delete(ids, securityService.getCurrentUser()));
+    public ResponseEntity<List<MonitoredStockResponse>> delete(@RequestBody List<String> ids) {
+        return ResponseEntity.ok(mapper.monitoredStockResponseList(monitoredStockService.delete(ids, securityService.getCurrentUser())));
     }
 
     @SecuredMapping(method = RequestMethod.PUT, role = "user")
-    public ResponseEntity<MonitoredStock> update(@RequestBody @Valid StockMonitoringUpdateRequest request) {
-        return ResponseEntity.ok(monitoredStockService.update(request, securityService.getCurrentUser()));
+    public ResponseEntity<MonitoredStockResponse> update(@RequestBody @Valid StockMonitoringUpdateRequest request) {
+        return ResponseEntity.ok(mapper.monitoredStockResponse(monitoredStockService.update(request, securityService.getCurrentUser())));
     }
 
 }

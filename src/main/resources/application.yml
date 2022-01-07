@@ -12,23 +12,23 @@ mail:
   tls: true
 jwt:
   jwtHeaderName: ${JWT_HEADER_NAME}
+  secret: ${JWT_SECRET}
 general:
   admin:
     username: ${ADMIN_USERNAME}
     password: ${ADMIN_PASSWORD}
     email: ${ADMIN_EMAIL}
-  notificationEmail: ${NOTIFICATION_EMAIL}
   stocks:
     - ticker: NVDA
       notifyBelow: 300
-      notifyAbove: 280
+      notifyAbove: 270
       notifyEveryPercent: 5
     - ticker: TSLA
       notifyBelow: 1100
-      notifyAbove: 1040
+      notifyAbove: 1000
       notifyEveryPercent: 10
     - ticker: AMD
-      notifyBelow: 130
+      notifyBelow: 120
       notifyAbove: 140
       notifyEveryPercent: 5
     - ticker: ARKK
@@ -37,13 +37,14 @@ general:
       notifyEveryPercent: 5
     - ticker: ARKG
       notifyBelow: 50
-      notifyAbove: 100
+      notifyAbove: 80
       notifyEveryPercent: 5
   timeout: 2000
   wakeup-url: ${WAKEUP_URL}
 spring:
   main:
     allow-bean-definition-overriding: true
+    banner-mode: off
   datasource:
     url: jdbc:h2:file:./resources/h2/database
     driver-class-name: org.h2.Driver

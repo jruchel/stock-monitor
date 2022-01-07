@@ -26,8 +26,8 @@ public class StartupService {
     public void startup() {
         setupRoles();
         createAdminAccount();
-        User user = userService.getByUsername(properties.getAdmin().getUsername());
         for (MonitoredStock stock : properties.getStocks()) {
+            User user = userService.getByUsername(properties.getAdmin().getUsername());
             monitoredStockService.saveStockForUser(stock, user);
         }
     }

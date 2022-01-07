@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -19,24 +20,33 @@ import java.util.List;
 public class StockInformationProcessor {
 
     private final NotificationService notificationService;
-    private final NotificationEventService notificationEventService;
     private final MonitoredStockService monitoredStockService;
     @Qualifier("listOfStocks")
     private final List<MonitoredStock> stockList;
 
     public void processStockData(StockData stockData) {
         List<User> interestedUsers = monitoredStockService.getUsersMonitoringStock(stockData.getTicker());
-        NotificationEvent previousNotification = notificationEventService.findByTicker(stockData.getTicker());
-        if (previousNotification == null)
-            notificationService.sendDummyNotification(stockData.getTicker(), stockData.getPrice());
-        else if (shouldNotify(stockData, previousNotification))
-            notificationService.sendNotification(stockData.getTicker(), previousNotification.getPriceNotified(), stockData.getPrice());
 
+        for (User user : interestedUsers) {
+            List<MonitoredStock> associatedStocks = getAssociatedStocks(user, stockData.getTicker());
+
+            for (MonitoredStock stock : associatedStocks) {
+                if (stock.getLastNotification() == null) {
+                    notificationService.sendDummyNotification(stock, stockData.getPrice());
+                } else if (shouldNotify(stockData, stock)) {
+                    notificationService.sendNotification(stock, stock.getLastNotification().getPriceNotified(), stockData.getPrice());
+                }
+            }
+        }
     }
 
-    private boolean shouldNotify(StockData stockData, NotificationEvent previousNotification) {
-        MonitoredStock relevantStock = getRelevantStock(stockData);
-        if (relevantStock == null) return false;
+
+    private List<MonitoredStock> getAssociatedStocks(User user, String ticker) {
+        return user.getMonitoredStocks().stream().filter(stock -> stock.getTicker().equals(ticker)).collect(Collectors.toList());
+    }
+
+    private boolean shouldNotify(StockData stockData, MonitoredStock relevantStock) {
+        NotificationEvent previousNotification = relevantStock.getLastNotification();
         if (previousNotification != null) {
             if (relevantStock.getNotifyAbove() > 0 && stockData.getPrice() > relevantStock.getNotifyAbove() && previousNotification.getPriceNotified() < relevantStock.getNotifyAbove())
                 return true;

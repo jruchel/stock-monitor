@@ -15,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 public class GeneralProperties {
-    private String notificationEmail;
     private List<MonitoredStock> stocks;
     private long timeout;
     private String wakeupUrl;

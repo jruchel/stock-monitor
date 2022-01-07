@@ -1,16 +1,20 @@
 package com.jruchel.stockmonitor.services.stocks;
 
 import com.jruchel.stockmonitor.config.GeneralProperties;
+import com.jruchel.stockmonitor.config.security.JWTConfig;
 import com.jruchel.stockmonitor.models.StockData;
 import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.models.entities.User;
+import com.jruchel.stockmonitor.security.jwt.JWTUtils;
 import com.jruchel.stockmonitor.services.users.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.RequestEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,8 @@ public class ScheduledStockCheckService {
     private final StockInformationProcessor stockInformationProcessor;
     private final MonitoredStockService monitoredStockService;
     private final UserService userService;
+    private final JWTConfig jwtConfig;
+    private final JWTUtils jwtUtils;
 
     @Scheduled(fixedRateString = "#{generalProperties.timeout}")
     public void checkStocks() {
@@ -45,10 +51,20 @@ public class ScheduledStockCheckService {
         }
     }
 
-    @Scheduled(fixedRate = 300000)
+    @Scheduled(fixedRate = 10000)
     public void wakeup() {
         try {
-            restTemplate.getForObject(properties.getWakeupUrl(), String.class);
+            RequestEntity<Void> requestEntity = RequestEntity
+                    .get(
+                            URI.create(properties.getWakeupUrl())
+                    )
+                    .header(
+                            jwtConfig.getJwtHeaderName(),
+                            jwtUtils.generateToken(userService.getAdminUser())
+                    ).build();
+
+            restTemplate.exchange(requestEntity, String.class);
+            log.info("Keeping the app awake");
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

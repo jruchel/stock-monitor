@@ -27,6 +27,8 @@ public class MonitoredStock {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_stock")
     private User user;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private NotificationEvent lastNotification;
 
     @PreRemove
     public void preRemove() {

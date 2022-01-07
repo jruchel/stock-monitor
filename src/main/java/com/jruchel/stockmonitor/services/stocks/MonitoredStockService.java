@@ -35,19 +35,25 @@ public class MonitoredStockService {
         return repository.getMonitoredStockByTickerAndUser(ticker, user);
     }
 
+    public MonitoredStock save(MonitoredStock stock) {
+        return repository.save(stock);
+    }
+
     public MonitoredStock saveStockForUser(MonitoredStock stock, User user) {
-        MonitoredStock existingStock = repository
-                .getMonitoredStockByTickerAndNotifyBelowAndNotifyAboveAndNotifyEveryPercentAndUser(
+        User[] finalUser = new User[1];
+        finalUser[0] = user;
+        List<MonitoredStock> existingStocks = repository
+                .getMonitoredStockByTickerAndNotifyBelowAndNotifyAboveAndNotifyEveryPercent(
                         stock.getTicker(),
                         stock.getNotifyBelow(),
                         stock.getNotifyAbove(),
-                        stock.getNotifyEveryPercent(),
-                        user
+                        stock.getNotifyEveryPercent()
                 );
-        if (existingStock != null) throw new ValidationException("Identical stock monitoring already exists");
-        user.getMonitoredStocks().add(stock);
-        stock.setUser(user);
-        user = userService.save(user);
+        if (existingStocks.stream().anyMatch(s -> s.getUser().getId().equals(finalUser[0].getId())))
+            throw new ValidationException("Identical stock monitoring already exists");
+        finalUser[0].getMonitoredStocks().add(stock);
+        stock.setUser(finalUser[0]);
+        finalUser[0] = userService.save(finalUser[0]);
 
         return user.getMonitoredStocks().stream().filter(s -> sameAs(stock, s)).findFirst().orElse(null);
     }
