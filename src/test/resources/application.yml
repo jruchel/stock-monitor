@@ -1,0 +1,59 @@
+stock-api:
+  key:
+    name: key
+    value: value
+  address: https://api.com
+  main-endpoint: /data
+mail:
+  host: mock
+  port: 123
+  username: mock
+  password: mock
+  tls: true
+jwt:
+  jwtHeaderName: token
+  secret: secret
+general:
+  admin:
+    username: admin
+    password: admin
+    email: admin@admin.admin
+  notificationEmail: admin@admin.admin
+  stocks:
+    - ticker: NVDA
+      notifyBelow: 300
+      notifyAbove: 280
+      notifyEveryPercent: 5
+    - ticker: TSLA
+      notifyBelow: 1100
+      notifyAbove: 1040
+      notifyEveryPercent: 10
+    - ticker: AMD
+      notifyBelow: 130
+      notifyAbove: 140
+      notifyEveryPercent: 5
+    - ticker: ARKK
+      notifyBelow: 80
+      notifyAbove: 100
+      notifyEveryPercent: 5
+    - ticker: ARKG
+      notifyBelow: 50
+      notifyAbove: 100
+      notifyEveryPercent: 5
+  timeout: 2000
+  wakeup-url: http://localhost:8080
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:h2:file:./resources/h2/database
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+      path: /console

@@ -14,7 +14,7 @@ import java.util.List;
 
 class StockInformationProcessorTest {
 
-    private List<MonitoredStock> stockList = List.of(new MonitoredStock("1234", "TEST", 500, 550, 5));
+    private List<MonitoredStock> stockList = List.of(new MonitoredStock("1234", "TEST", 500, 550, 5, null));
     @Mock
     private NotificationEventService notificationEventService;
     @Mock

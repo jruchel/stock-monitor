@@ -3,9 +3,7 @@ package com.jruchel.stockmonitor.models.entities;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -26,4 +24,14 @@ public class MonitoredStock {
     private double notifyBelow;
     private double notifyAbove;
     private double notifyEveryPercent;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_stock")
+    private User user;
+
+    @PreRemove
+    public void preRemove() {
+        user.getMonitoredStocks().remove(this);
+        this.user = null;
+    }
+
 }

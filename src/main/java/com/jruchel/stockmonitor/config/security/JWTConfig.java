@@ -16,5 +16,6 @@ import org.springframework.stereotype.Component;
 public class JWTConfig {
 
     private String jwtHeaderName;
+    private String secret;
 
 }

@@ -3,6 +3,7 @@ package com.jruchel.stockmonitor.services.stocks;
 import com.jruchel.stockmonitor.models.StockData;
 import com.jruchel.stockmonitor.models.entities.MonitoredStock;
 import com.jruchel.stockmonitor.models.entities.NotificationEvent;
+import com.jruchel.stockmonitor.models.entities.User;
 import com.jruchel.stockmonitor.services.notifications.NotificationEventService;
 import com.jruchel.stockmonitor.services.notifications.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,12 @@ public class StockInformationProcessor {
 
     private final NotificationService notificationService;
     private final NotificationEventService notificationEventService;
+    private final MonitoredStockService monitoredStockService;
     @Qualifier("listOfStocks")
     private final List<MonitoredStock> stockList;
 
     public void processStockData(StockData stockData) {
+        List<User> interestedUsers = monitoredStockService.getUsersMonitoringStock(stockData.getTicker());
         NotificationEvent previousNotification = notificationEventService.findByTicker(stockData.getTicker());
         if (previousNotification == null)
             notificationService.sendDummyNotification(stockData.getTicker(), stockData.getPrice());

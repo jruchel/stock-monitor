@@ -1,7 +1,8 @@
 package com.jruchel.stockmonitor.services;
 
 import com.jruchel.stockmonitor.config.GeneralProperties;
-import com.jruchel.stockmonitor.controllers.models.UserRegistrationRequest;
+import com.jruchel.stockmonitor.models.entities.MonitoredStock;
+import com.jruchel.stockmonitor.models.entities.User;
 import com.jruchel.stockmonitor.security.SecurityService;
 import com.jruchel.stockmonitor.services.stocks.MonitoredStockService;
 import com.jruchel.stockmonitor.services.users.RoleService;
@@ -25,7 +26,10 @@ public class StartupService {
     public void startup() {
         setupRoles();
         createAdminAccount();
-        monitoredStockService.addStockMonitoring(properties.getStocks());
+        User user = userService.getByUsername(properties.getAdmin().getUsername());
+        for (MonitoredStock stock : properties.getStocks()) {
+            monitoredStockService.saveStockForUser(stock, user);
+        }
     }
 
     private void setupRoles() {

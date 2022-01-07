@@ -3,6 +3,8 @@ package com.jruchel.stockmonitor.services.stocks;
 import com.jruchel.stockmonitor.config.GeneralProperties;
 import com.jruchel.stockmonitor.models.StockData;
 import com.jruchel.stockmonitor.models.entities.MonitoredStock;
+import com.jruchel.stockmonitor.models.entities.User;
+import com.jruchel.stockmonitor.services.users.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,10 +24,17 @@ public class ScheduledStockCheckService {
     private final RestTemplate restTemplate;
     private final StockInformationProcessor stockInformationProcessor;
     private final MonitoredStockService monitoredStockService;
+    private final UserService userService;
 
     @Scheduled(fixedRateString = "#{generalProperties.timeout}")
     public void checkStocks() {
-        List<MonitoredStock> monitoredStockList = monitoredStockService.getAll();
+        for (User user : userService.getAllUsers()) {
+            checkStocks(user);
+        }
+    }
+
+    private void checkStocks(User user) {
+        List<MonitoredStock> monitoredStockList = monitoredStockService.getAll(user);
         if (monitoredStockList.isEmpty()) return;
         List<StockData> stockData = stockDataService.getMultipleStocksData(monitoredStockList.stream().map(MonitoredStock::getTicker).collect(Collectors.toList()));
         log.info("Current stock prices {}", stockData.get(0).getTimestamp());
@@ -36,8 +45,13 @@ public class ScheduledStockCheckService {
         }
     }
 
+    @Scheduled(fixedRate = 300000)
     public void wakeup() {
-        restTemplate.getForObject(properties.getWakeupUrl(), String.class);
+        try {
+            restTemplate.getForObject(properties.getWakeupUrl(), String.class);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
     }
 
 }

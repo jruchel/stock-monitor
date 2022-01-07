@@ -1,10 +1,11 @@
 package com.jruchel.stockmonitor.security.jwt;
 
+import com.jruchel.stockmonitor.config.security.JWTConfig;
 import com.jruchel.stockmonitor.models.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +16,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
+@RequiredArgsConstructor
 public class JWTUtils {
 
-    private final String secret;
-
-    public JWTUtils(@Value("${JWT_SECRET}") String secret) {
-        this.secret = secret;
-    }
-
+    private final JWTConfig config;
 
     public String extractUsername(String token) throws SignatureException {
         return extractClaim(token, Claims::getSubject);
@@ -46,7 +43,7 @@ public class JWTUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(config.getSecret()).parseClaimsJws(token).getBody();
     }
 
     public String generateToken(User user) {
@@ -63,7 +60,7 @@ public class JWTUtils {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(SignatureAlgorithm.HS256, config.getSecret())
                 .compact();
     }
 }
