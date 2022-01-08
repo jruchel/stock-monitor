@@ -27,9 +27,9 @@ general:
       notifyBelow: 1100
       notifyAbove: 1000
       notifyEveryPercent: 10
-    - ticker: AMD
-      notifyBelow: 120
-      notifyAbove: 140
+    - ticker: PLTR
+      notifyBelow: 15
+      notifyAbove: 20
       notifyEveryPercent: 5
     - ticker: ARKK
       notifyBelow: 80

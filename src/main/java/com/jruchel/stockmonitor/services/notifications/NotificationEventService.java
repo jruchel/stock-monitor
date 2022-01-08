@@ -7,6 +7,8 @@ import com.jruchel.stockmonitor.services.stocks.MonitoredStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class NotificationEventService {
@@ -22,6 +24,10 @@ public class NotificationEventService {
         monitoredStock.setLastNotification(notificationEvent);
         monitoredStock = monitoredStockService.save(monitoredStock);
         return monitoredStock.getLastNotification();
+    }
+
+    public List<NotificationEvent> getAll() {
+        return repository.findAll();
     }
 
 }

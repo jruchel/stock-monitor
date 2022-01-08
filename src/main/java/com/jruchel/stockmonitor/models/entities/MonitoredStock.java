@@ -34,6 +34,7 @@ public class MonitoredStock {
     public void preRemove() {
         user.getMonitoredStocks().remove(this);
         this.user = null;
+        this.lastNotification = null;
     }
 
 }
